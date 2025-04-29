@@ -7,3 +7,5 @@ scikit-learn
 accelerate
 janome
 pyngrok
+python-dotenv
+ipykernel
