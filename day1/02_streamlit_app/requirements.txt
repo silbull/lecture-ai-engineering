@@ -9,3 +9,8 @@ janome
 pyngrok
 python-dotenv
 ipykernel
+fastapi
+uvicorn
+pydantic
+sentencepiece
+protobuf
