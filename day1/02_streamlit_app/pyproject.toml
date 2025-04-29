@@ -1,0 +1,122 @@
+[project]
+name = "02-streamlit-app"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "accelerate>=1.6.0",
+    "fastapi>=0.115.12",
+    "ipykernel>=6.29.5",
+    "janome>=0.5.0",
+    "nltk>=3.9.1",
+    "pandas>=2.2.3",
+    "protobuf>=5.29.4",
+    "pydantic>=2.11.3",
+    "pyngrok>=7.2.5",
+    "python-dotenv>=1.1.0",
+    "scikit-learn>=1.6.1",
+    "sentencepiece>=0.2.0",
+    "streamlit>=1.44.1",
+    "torch>=2.7.0",
+    "transformers>=4.51.3",
+    "uvicorn>=0.34.2",
+]
+
+[tool.ruff]
+select = [
+  "F", # Flake8
+  "B", # Black
+  "I", # isort
+  "E", # error
+  "W", # warning
+]
+
+extend-include = ["*.ipynb"]
+
+fixable = ["ALL"]
+exclude = [".ruff_cache", "logs/"]
+
+# indent-width = 4
+target-version = "py310"
+
+line-length = 85
+
+[tool.ruff.lint]
+ignore = [
+  "G004",    # `logging-f-string` : loggingでf-stringを使いたいので無視する
+  "PD901",   #すでに`df`という変数をいろんなところで使っているため
+  "PD002",   #すでにpandasで`inplace=True`はいろんなところで使っているため
+  "RUF001",  # 全角記号など`ambiguous unicode character`も使いたいため
+  "RUF002",  # 全角記号など`ambiguous unicode character`も使いたいため
+  "RUF003",  # 全角記号など`ambiguous unicode character`も使いたいため
+  "PLC1901", # compare-to-empty-string : `if a == "`のように空文字列で直接比較したいときがあるため
+  "PLR2004", # magic-value-comparison: listのサイズで判定するときがよくあるため
+  "PLW2901", # no-else-return: else returnを使いたいときがあるため
+  "ANN001",  # missing-type: 引数には型ヒントを付けないことがあるため
+  "ANN101",  # pylintmissing-type-self: 引数selfには型ヒントは付けていないため
+  "ANN102",  # missing-type-cls: 引数clsには型ヒントは付けていないため
+  "ANN002",  # missing-type-args
+  "ANN003",  # missing-type-kwargs
+  "ANN204",  # missing-type-return
+  "ERA",     # : 役立つこともあるが、コメントアウトしていないコードも警告されるので無視する
+  "F401",    # module-level import not used : 使っていないimportも残しておきたいため
+  "NPY002",
+  "DTZ005",  # datetime-timezone : タイムゾーンを意識していないコードもあるため
+
+  # いずれ無視しないようにする
+  "ANN201", # missing-return-type-public-function:
+  "ANN202", # missing-return-type-private-function:
+  "PLR",    # pylint Refactor
+
+  # 以下のルールはannofabcliのコードに合っていないので無効化した
+  "RSE", # flake8-raise
+  "D",   # pydocstyle, Docstringを中途半端にしか書いていないので、除外する
+  "C90", # mccabe
+  "T20", # flake8-print
+  "SLF", #  flake8-self
+  "BLE", # flake8-blind-except
+  "FBT", # flake8-boolean-trap
+  "TRY", # tryceratops
+  "COM", # flake8-commas
+  "S",   # flake8-bandit
+  "EM",  #flake8-errmsg
+  "EXE", # flake8-executable
+  "ICN", # flake8-import-conventions
+  "RET", #flake8-return
+  "SIM", #flake8-simplify
+  "TCH", # flake8-type-checking
+  "PTH", #pathlibを使わないコードが多いので、除外する
+  "ISC", #flake8-implicit-str-concat
+  "N",   # pep8-naming
+  "PT",  # flake8-pytest-style
+
+  "INP001"
+]
+select = ["ALL"]
+
+
+[tool.ruff.format]
+indent-style = "space"
+
+[tool.pyright]
+exclude = [
+  "data",
+  "only_pigdm",
+  "only_sdedit",
+  "sdedit+pigdm_x0_images",
+  "models/r2dm-h-kittiraw-300k_64x1024_large.pth",
+  "models/r2dm-h-kittiraw-300k_64x1024_normal.pth",
+  "logs/",
+]
+
+reportOptionalMemberAccess = "none"
+reportInvalidTypeForm = "none"
+reportArgumentType = "none"
+reportIndexIssue = "none"  # evaluate.py 一時的に無効化
+reportGeneralTypeIssues = "none" # rangenet.py 一時的に無効化
+reportOptionalSubscript = "none" # rangenet.py 一時的に無効化 NoneTypeに対するsubscriptがあるため
+reportAttributeAccessIssue = "none" # rangenet.py 一時的に無効化
+reportCallIssue = "none" # rangenet.py 一時的に無効化
+reportReturnType = "none" # rangenet.py 一時的に無効化
+reportPossiblyUnboundVariable = "none"
