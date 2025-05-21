@@ -1,41 +1,51 @@
 name: ML Pipeline CI
-
-on:
+# どのイベント（push、pull_request、schedule など）でワークフローを実行するかはカスタマイズ可能
+# ここではmainかmasterに対してプルリクエストをしたときに実行
+on: # イベントトリガーの指定
   # push:
   #   branches: [ main, master  ]
   pull_request:
     branches: [ main, master ]
-
+# jobs セクションでジョブを定義し、runs-on で実行環境を指定
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
-    
+
+
+# 環境設定
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-        
+# installするライブラリの指定
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install pytest great_expectations pandas scikit-learn flake8 black mypy pytest-cov
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-        
+
+# コードの品質チェック
+# ここでは、flake8でチェックしている。チェックディレクトリやファイルはカスタマイズ可能
     - name: Lint with flake8
       run: |
         flake8 day5/演習3 --count --select=E9,F63,F7,F82 --show-source --statistics
         flake8 day5/演習3 --count --exit-zero --max-complexity=10 --max-line-length=88 --statistics
-        
+
+# フォーマットチェック
+# ここでは、blackでチェックしている。チェックディレクトリやファイルはカスタマイズ可能
     - name: Format check with black
       run: |
         black --check day5/演習3
-        
+
+# テストの実行
+# ここでは、pytestでテストを実行している。テストディレクトリやファイルはカスタマイズ可能
+# testしたい内容はファイルに書いている
     - name: Run data tests
       run: |
         pytest day5/演習3/tests/test_data.py -v
-        
+
     - name: Run model tests
       run: |
         pytest day5/演習3/tests/test_model.py -v
