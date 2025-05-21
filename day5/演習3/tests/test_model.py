@@ -135,13 +135,14 @@ def test_model_inference_time(train_model):
     # 推論時間が1秒未満であることを確認
     assert inference_time < 1.0, f"推論時間が長すぎます: {inference_time}秒"
 
+
 def test_model_performance_comparison():
     """過去バージョンのモデルと比較して性能劣化がないか検証"""
     # 現在のモデルをロード
     if not os.path.exists(MODEL_PATH):
         pytest.skip("現在のモデルファイルが存在しないためスキップします")
 
-    with open(MODEL_PATH, 'rb') as f:
+    with open(MODEL_PATH, "rb") as f:
         current_model = pickle.load(f)
 
     # 過去バージョンのモデルのパス
@@ -150,12 +151,12 @@ def test_model_performance_comparison():
     # 過去バージョンのモデルが存在しない場合は現在のモデルをコピーしてスキップ
     if not os.path.exists(OLD_MODEL_PATH):
         # テスト目的でモデルをコピー保存（実際の運用ではこのロジックは変更が必要）
-        with open(OLD_MODEL_PATH, 'wb') as f:
+        with open(OLD_MODEL_PATH, "wb") as f:
             pickle.dump(current_model, f)
         pytest.skip("過去バージョンのモデルが存在しないためスキップします")
 
     # 過去バージョンのモデルをロード
-    with open(OLD_MODEL_PATH, 'rb') as f:
+    with open(OLD_MODEL_PATH, "rb") as f:
         previous_model = pickle.load(f)
 
     # テストデータを準備
@@ -173,7 +174,9 @@ def test_model_performance_comparison():
     previous_accuracy = accuracy_score(y_test, previous_pred)
 
     # 現在のモデルが過去のモデルより悪くないことを確認
-    assert current_accuracy >= previous_accuracy * 0.95, f"モデルの性能が著しく低下しています: 現在={current_accuracy:.4f}, 過去={previous_accuracy:.4f}"
+    assert (
+        current_accuracy >= previous_accuracy * 0.95
+    ), f"モデルの性能が著しく低下しています: 現在={current_accuracy:.4f}, 過去={previous_accuracy:.4f}"
 
     # 推論時間の比較（オプション）
     start_time = time.time()
@@ -185,7 +188,9 @@ def test_model_performance_comparison():
     previous_inference_time = time.time() - start_time
 
     # 推論時間が著しく悪化していないか確認（例: 1.5倍以上遅くなっていないか）
-    assert current_inference_time <= previous_inference_time * 1.5, f"推論時間が著しく悪化しています: 現在={current_inference_time:.4f}秒, 過去={previous_inference_time:.4f}秒"
+    assert (
+        current_inference_time <= previous_inference_time * 1.5
+    ), f"推論時間が著しく悪化しています: 現在={current_inference_time:.4f}秒, 過去={previous_inference_time:.4f}秒"
 
 
 def test_model_reproducibility(sample_data, preprocessor):
