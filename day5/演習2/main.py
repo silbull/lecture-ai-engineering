@@ -40,7 +40,7 @@ class DataLoader:
         if columns_to_drop:
             data.drop(columns_to_drop, axis=1, inplace=True)
 
-        # 目的変数とその他を分離
+        # 目的変数とその他を分離P
         if "Survived" in data.columns:
             y = data["Survived"]
             X = data.drop("Survived", axis=1)
@@ -89,6 +89,10 @@ class DataValidator:
                 print(f"警告: 以下のカラムがありません: {missing_columns}")
                 return False, [{"success": False, "missing_columns": missing_columns}]
 
+            # 望ましい値の範囲を確認
+            # 例: Pclassは1, 2, 3のいずれか、Sexはmaleまたはfemale
+            # 年齢は0から100の範囲、Fareは0から600の範囲
+            # EmbarkedはC, Q, Sのいずれか
             expectations = [
                 gx.expectations.ExpectColumnDistinctValuesToBeInSet(
                     column="Pclass", value_set=[1, 2, 3]
